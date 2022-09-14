@@ -1,6 +1,7 @@
 import { ClickAwayListener, styled, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { v4 as uuid } from 'uuid'
+import { NoteContext } from '../../Context/Context'
 const Container = styled('div')`
   display: flex;
   flex-direction: column;
@@ -18,7 +19,8 @@ const Container = styled('div')`
 
 const FormElement = () => {
   const [show, setShow] = useState(false)
-  const [notes, setNotes] = useState([])
+
+  const { notes, setNotes } = useContext(NoteContext)
 
   const [note, setNote] = useState({
     id: uuid(),

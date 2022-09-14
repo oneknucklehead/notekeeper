@@ -14,12 +14,9 @@ const Navbar = styled(MuiAppBar)`
 const Heading = styled(Typography)`
   color: #5f6368;
   font-size: 24px;
-  margin-left: 25px;
+  margin-left: 15px;
 `
-const NavHeader = ({ open, setOpen, handleDrawerOpen }) => {
-  const handleDrawer = () => {
-    setOpen((state) => !state)
-  }
+const NavHeader = ({ open, handleDrawer }) => {
   return (
     <Navbar position='fixed' open={open}>
       <Toolbar>
@@ -28,7 +25,8 @@ const NavHeader = ({ open, setOpen, handleDrawerOpen }) => {
           onClick={handleDrawer}
           edge='start'
           sx={{
-            marginRight: 5,
+            padding: 2,
+            marginRight: 1,
           }}
         >
           <MenuIcon />

@@ -1,5 +1,4 @@
-import { styled, useTheme } from '@mui/material/styles'
-import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 import MuiDrawer from '@mui/material/Drawer'
 import NavHeader from '../Navbar/NavHeader.js'
 import List from '../NavList/NavList.js'
@@ -52,7 +51,6 @@ const Drawer = styled(MuiDrawer, {
 }))
 
 const Sidebar = () => {
-  const theme = useTheme()
   const [open, setOpen] = useState(true)
 
   const handleDrawer = () => {

@@ -44,7 +44,6 @@ const FormElement = () => {
       tagline: '',
       text: '',
     })
-    console.log(notes)
   }
 
   const handleNoteChange = (e) => {
@@ -61,7 +60,6 @@ const FormElement = () => {
                 variant='standard'
                 InputProps={{ disableUnderline: true }}
                 name='title'
-                sx={{ width: '50%' }}
                 onChange={(e) => handleNoteChange(e)}
                 value={note.title}
               />
@@ -69,7 +67,6 @@ const FormElement = () => {
                 placeholder='Tagline'
                 variant='standard'
                 InputProps={{ disableUnderline: true }}
-                sx={{ width: '50%' }}
                 value={note.tagline}
                 onChange={(e) => handleNoteChange(e)}
                 name='tagline'

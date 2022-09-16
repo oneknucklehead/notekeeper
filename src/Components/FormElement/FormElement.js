@@ -24,6 +24,7 @@ const FormElement = () => {
 
   const [note, setNote] = useState({
     id: uuid(),
+    pinned: false,
     title: '',
     tagline: '',
     text: '',
@@ -40,6 +41,7 @@ const FormElement = () => {
     }
     setNote({
       id: uuid(),
+      pinned: false,
       title: '',
       tagline: '',
       text: '',

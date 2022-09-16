@@ -12,10 +12,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }))
 
-const PinnedArea = styled('div')`
-  background: salmon;
-`
-
 const EmptyContainer = styled('div')`
   display: flex;
   justify-content: center;
@@ -37,7 +33,7 @@ const NoteArea = () => {
     start: 0,
     end: MAX_NOTE,
   })
-  const { notes, setNotes } = useContext(NoteContext)
+  const { notes, setNotes, pinnedNotes } = useContext(NoteContext)
 
   const handlePageChange = (e, value) => {
     setPage({
@@ -71,6 +67,87 @@ const NoteArea = () => {
       <Box sx={{ p: 3, width: '100%' }}>
         <DrawerHeader></DrawerHeader>
         <FormElement />
+
+        {pinnedNotes.length > 0 ? (
+          // <PinnedArea>
+          <div style={{ marginTop: '1rem' }}>
+            <Typography
+              sx={{ fontSize: '0.9rem', fontWeight: '500', color: '#d3d3d3' }}
+            >
+              PINNED
+            </Typography>
+            <Grid container spacing={1}>
+              {pinnedNotes.map((pinnedNote) => (
+                <Grid key={pinnedNote.id} item xs={12} md={4} lg={2}>
+                  <Note note={pinnedNote} />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        ) : // </PinnedArea>
+        null}
+        {notes.length > 0 ? (
+          <>
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+              <Droppable droppableId='droppable' direction='horizontal'>
+                {(provided) => (
+                  <div style={{ marginTop: '1rem' }}>
+                    {pinnedNotes.length > 0 ? (
+                      <Typography
+                        sx={{
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          color: '#d3d3d3',
+                        }}
+                      >
+                        OTHERS
+                      </Typography>
+                    ) : null}
+                    <Grid
+                      container
+                      spacing={1}
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      {/* {just to get rid of the error} */}
+                      <span style={{ display: 'none' }}>
+                        {provided.placeholder}
+                      </span>
+                      {notes.slice(page.start, page.end).map((note, index) => (
+                        <Draggable
+                          key={note.id}
+                          draggableId={note.id}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <Grid
+                              xs={12}
+                              md={4}
+                              lg={2}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              item
+                            >
+                              <Note note={note} />
+                            </Grid>
+                          )}
+                        </Draggable>
+                      ))}
+                    </Grid>
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </>
+        ) : (
+          <EmptyContainer>
+            <Lightbulb style={{ fontSize: '7rem', color: '#c0c0c0' }} />
+            <Typography style={{ fontSize: '1.5rem', color: '#80868B' }}>
+              Notes you add appear here
+            </Typography>
+          </EmptyContainer>
+        )}
         {notes.length > 0 ? (
           <PaginationContainer>
             <Pagination
@@ -82,55 +159,6 @@ const NoteArea = () => {
             />
           </PaginationContainer>
         ) : null}
-        <PinnedArea></PinnedArea>
-        {notes.length > 0 ? (
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId='droppable' direction='horizontal'>
-              {(provided) => (
-                <Grid
-                  container
-                  spacing={1}
-                  style={{ marginTop: '1rem' }}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {/* {just to get rid of the error} */}
-                  <span style={{ display: 'none' }}>
-                    {provided.placeholder}
-                  </span>
-                  {notes.slice(page.start, page.end).map((note, index) => (
-                    <Draggable
-                      key={note.id}
-                      draggableId={note.id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <Grid
-                          xs={12}
-                          md={4}
-                          lg={2}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          item
-                        >
-                          <Note note={note} />
-                        </Grid>
-                      )}
-                    </Draggable>
-                  ))}
-                </Grid>
-              )}
-            </Droppable>
-          </DragDropContext>
-        ) : (
-          <EmptyContainer>
-            <Lightbulb style={{ fontSize: '7rem', color: '#c0c0c0' }} />
-            <Typography style={{ fontSize: '1.5rem', color: '#80868B' }}>
-              Notes you add appear here
-            </Typography>
-          </EmptyContainer>
-        )}
       </Box>
     </Box>
   )

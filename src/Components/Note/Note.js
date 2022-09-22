@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined'
 import PushPinIcon from '@mui/icons-material/PushPin'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import React, { useContext, useState } from 'react'
 import { NoteContext } from '../../Context/Context'
 import { Box } from '@mui/system'
@@ -44,10 +45,11 @@ const style = {
 }
 
 const Note = ({ note }) => {
-  const { notes, setNotes, pinnedNotes, setPinnedNotes } =
+  const { notes, setNotes, pinnedNotes, setPinnedNotes, trash, setTrash } =
     useContext(NoteContext)
 
   const [open, setOpen] = useState(false)
+  const [hover, setHover] = useState(false)
   const handlePinNote = (note) => {
     if (note.pinned) {
       const updatedNotes = pinnedNotes.filter((data) => data.id !== note.id)
@@ -61,12 +63,23 @@ const Note = ({ note }) => {
       setPinnedNotes((state) => [note, ...state])
     }
   }
-  const handleModalOpen = () => {
+  const handleDeleteNotes = (note) => {
+    var deletedNote
+    if (note.pinned) {
+      deletedNote = pinnedNotes.filter((data) => data.id === note.id)
+      const updatedNotes = pinnedNotes.filter((data) => data.id !== note.id)
+      setPinnedNotes(updatedNotes)
+    } else {
+      deletedNote = notes.filter((data) => data.id === note.id)
+      const updatedNotes = notes.filter((data) => data.id !== note.id)
+      setNotes(updatedNotes)
+    }
+    setTrash((state) => [...deletedNote, ...state])
+  }
+  const handleModal = () => {
     setOpen(!open)
   }
-  const handleModalClose = () => {
-    setOpen(!open)
-  }
+
   const handleNoteChange = (e) => {
     const updatedNote = { ...note, [e.target.name]: e.target.value }
     let updatedNotes
@@ -95,19 +108,25 @@ const Note = ({ note }) => {
   return (
     <>
       {!open && (
-        <NoteCard onClick={handleModalOpen}>
+        <NoteCard
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          onClick={handleModal}
+        >
           <CardContent>
             <CardHeader
               style={{ padding: 0 }}
               titleTypographyProps={{ variant: 'h6' }}
               title={note.title}
               action={
-                <IconButton
-                  disableTouchRipple
-                  onClick={() => handlePinNote(note)}
-                >
-                  {note.pinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
-                </IconButton>
+                hover ? (
+                  <IconButton
+                    disableTouchRipple
+                    onClick={() => handlePinNote(note)}
+                  >
+                    {note.pinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
+                  </IconButton>
+                ) : null
               }
             />
 
@@ -125,6 +144,14 @@ const Note = ({ note }) => {
             >
               {note.text}
             </Typography>
+            {hover && (
+              <IconButton
+                disableTouchRipple
+                onClick={() => handleDeleteNotes(note)}
+              >
+                <DeleteForeverIcon />
+              </IconButton>
+            )}
           </CardContent>
         </NoteCard>
       )}
@@ -133,7 +160,7 @@ const Note = ({ note }) => {
           aria-labelledby='transition-modal-title'
           aria-describedby='transition-modal-description'
           open={open}
-          onClose={handleModalClose}
+          onClose={handleModal}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{

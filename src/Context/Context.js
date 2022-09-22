@@ -6,9 +6,19 @@ const ContextProvider = ({ children }) => {
   const [notes, setNotes] = useState([])
   const [pinnedNotes, setPinnedNotes] = useState([])
   const [trash, setTrash] = useState([])
+  const [archive, setArchive] = useState([])
   return (
     <NoteContext.Provider
-      value={{ notes, setNotes, trash, setTrash, pinnedNotes, setPinnedNotes }}
+      value={{
+        notes,
+        setNotes,
+        trash,
+        setTrash,
+        pinnedNotes,
+        setPinnedNotes,
+        archive,
+        setArchive,
+      }}
     >
       {children}
     </NoteContext.Provider>

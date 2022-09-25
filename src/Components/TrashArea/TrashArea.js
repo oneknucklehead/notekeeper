@@ -1,7 +1,19 @@
-import { styled } from '@mui/material'
+import {
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  styled,
+  Typography,
+} from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useContext } from 'react'
 import { NoteContext } from '../../Context/Context'
+import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined'
+import PushPinIcon from '@mui/icons-material/PushPin'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EmptyTrash from './EmptyTrash'
+import TrashNote from './TrashNote'
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -20,12 +32,17 @@ const TrashArea = () => {
     >
       <Box sx={{ p: 3, width: '100%' }}>
         <DrawerHeader></DrawerHeader>
-        display trash "yourself" here
-        {trash.map((note) => (
-          <div key={note.id}>
-            <div>{note.title}</div>
-          </div>
-        ))}
+        {trash.length > 0 ? (
+          <Grid container spacing={1}>
+            {trash.map((note) => (
+              <Grid item key={note.id} xs={12} md={4} lg={2}>
+                <TrashNote note={note} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <EmptyTrash />
+        )}
       </Box>
     </Box>
   )

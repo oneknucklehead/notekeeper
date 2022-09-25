@@ -12,7 +12,7 @@ const Home = () => {
       <Router>
         <Sidebar />
         <Routes>
-          <Route path='/' element={<NoteArea />} />
+          <Route path='notekeeper' element={<NoteArea />} />
           <Route path='trash' element={<TrashArea />} />
           <Route path='archive' element={<ArchiveArea />} />
         </Routes>

@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import React, { useContext, useState } from 'react'
 import { NoteContext } from '../../Context/Context'
 import { Box } from '@mui/system'
@@ -27,6 +27,7 @@ const NoteCard = styled('div')`
     box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
       0 2px 6px 2px rgb(60 64 67 / 15%);
     transition: all 0.1s ease-in-out;
+    cursor: pointer;
   }
 `
 const style = {
@@ -50,6 +51,7 @@ const Note = ({ note }) => {
 
   const [open, setOpen] = useState(false)
   const [hover, setHover] = useState(false)
+
   const handlePinNote = (note) => {
     if (note.pinned) {
       const updatedNotes = pinnedNotes.filter((data) => data.id !== note.id)
@@ -119,14 +121,15 @@ const Note = ({ note }) => {
               titleTypographyProps={{ variant: 'h6' }}
               title={note.title}
               action={
-                hover ? (
-                  <IconButton
-                    disableTouchRipple
-                    onClick={() => handlePinNote(note)}
-                  >
-                    {note.pinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
-                  </IconButton>
-                ) : null
+                // hover ? (
+                <IconButton
+                  disableTouchRipple
+                  onClick={() => handlePinNote(note)}
+                >
+                  {hover &&
+                    (note.pinned ? <PushPinIcon /> : <PushPinOutlinedIcon />)}
+                </IconButton>
+                // ) : null
               }
             />
 
@@ -144,15 +147,17 @@ const Note = ({ note }) => {
             >
               {note.text}
             </Typography>
-            {hover && (
+          </CardContent>
+          <div style={{ padding: '4px', height: '2.5rem' }}>
+            {
               <IconButton
                 disableTouchRipple
                 onClick={() => handleDeleteNotes(note)}
               >
-                <DeleteForeverIcon />
+                {hover && <DeleteOutlinedIcon />}
               </IconButton>
-            )}
-          </CardContent>
+            }
+          </div>
         </NoteCard>
       )}
       {

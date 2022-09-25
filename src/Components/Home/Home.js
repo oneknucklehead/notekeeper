@@ -4,7 +4,6 @@ import React from 'react'
 import NoteArea from '../NoteArea/NoteArea'
 import Sidebar from '../Sidebar/Sidebar'
 import TrashArea from '../TrashArea/TrashArea'
-import ArchiveArea from '../ArchiveArea/ArchiveArea'
 
 const Home = () => {
   return (
@@ -14,7 +13,6 @@ const Home = () => {
         <Routes>
           <Route path='notekeeper' element={<NoteArea />} />
           <Route path='trash' element={<TrashArea />} />
-          <Route path='archive' element={<ArchiveArea />} />
         </Routes>
       </Router>
     </Box>

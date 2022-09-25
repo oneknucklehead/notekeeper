@@ -46,7 +46,7 @@ const style = {
 }
 
 const Note = ({ note }) => {
-  const { notes, setNotes, pinnedNotes, setPinnedNotes, trash, setTrash } =
+  const { notes, setNotes, pinnedNotes, setPinnedNotes, setTrash } =
     useContext(NoteContext)
 
   const [open, setOpen] = useState(false)
@@ -121,15 +121,14 @@ const Note = ({ note }) => {
               titleTypographyProps={{ variant: 'h6' }}
               title={note.title}
               action={
-                // hover ? (
-                <IconButton
-                  disableTouchRipple
-                  onClick={() => handlePinNote(note)}
-                >
-                  {hover &&
-                    (note.pinned ? <PushPinIcon /> : <PushPinOutlinedIcon />)}
-                </IconButton>
-                // ) : null
+                hover && (
+                  <IconButton
+                    disableTouchRipple
+                    onClick={() => handlePinNote(note)}
+                  >
+                    {note.pinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
+                  </IconButton>
+                )
               }
             />
 
